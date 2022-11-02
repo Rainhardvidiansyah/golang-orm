@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"go-orm/repository"
 	"log"
 	"os"
 
@@ -12,18 +13,25 @@ import (
 
 func main() {
 
-	_, err := gorm.Open(mysql.Open(dsn("")), &gorm.Config{})
+	db, err := gorm.Open(mysql.Open(dsn("")), &gorm.Config{})
 	if err != nil {
 		log.Fatal("There's an error while you are connecting to database", err.Error())
 	}
 
-	// repository := repository.NewUserRepository(db)
-	// id := repository.FindUserByID(2)
-	// fmt.Printf("User Id with %v \n", id)
+	repository := repository.NewUserRepository(db)
+	id := repository.FindUserByID(3)
+	fmt.Printf("User Id with %v \n", id)
+
+	// err = repository.DeleteUserById(3)
+	// if err != nil {
+	// 	fmt.Println("Fail to delete User", err.Error())
+	// } else {
+	// 	fmt.Println("Deleting user success")
+	// }
 
 }
 
-func dsn(des string) string {
+func dsn(con string) string {
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("There's an error in your env file")

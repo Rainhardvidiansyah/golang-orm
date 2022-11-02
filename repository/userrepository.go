@@ -11,6 +11,7 @@ type IUserRepository interface {
 	CreateUser(models.User) models.User
 	FindUserByID(ID int) (models.User, error)
 	SaveAllUser([]models.User) (*[]models.User, error)
+	DeleteUserById(ID int) error
 }
 
 type UserRepository struct {
@@ -36,9 +37,15 @@ func (repository *UserRepository) FindUserByID(ID int) *models.User {
 
 func (repository *UserRepository) SaveAllUser(users *[]models.User) (*[]models.User, error) {
 	if users == nil {
-		return nil, errors.New("Tidak bisa save")
+		return nil, errors.New("Cannot save users")
 	} else {
 		repository.DB.Create(&users)
 	}
 	return users, nil
+}
+
+func (repository *UserRepository) DeleteUserById(ID int) error {
+	var user models.User
+	repository.DB.Delete(&user, ID)
+	return nil
 }
