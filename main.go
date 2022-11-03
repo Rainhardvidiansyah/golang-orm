@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"go-orm/migration"
 	"go-orm/repository"
 	"log"
 	"os"
@@ -18,16 +19,23 @@ func main() {
 		log.Fatal("There's an error while you are connecting to database", err.Error())
 	}
 
-	repository := repository.NewUserRepository(db)
-	id := repository.FindUserByID(3)
-	fmt.Printf("User Id with %v \n", id)
+	migration.AutoMigration(db) //used to migrate a data
 
-	// err = repository.DeleteUserById(3)
-	// if err != nil {
-	// 	fmt.Println("Fail to delete User", err.Error())
-	// } else {
-	// 	fmt.Println("Deleting user success")
+	repository := repository.NewUserRepository(db)
+	// id := repository.FindUserByID(3)
+	// fmt.Printf("User Id with %v \n", id)
+
+	// var newuser = models.User{
+	// 	UserName: "Bintang",
+	// 	Email:    "bintang@gmail.com",
 	// }
+	// x, err := repository.UpdateUser(10, &newuser)
+	// log.Printf("Email: %s \n", x.Email)
+
+	users, _ := repository.FindAllUser()
+	for _, data := range *users {
+		fmt.Println(data)
+	}
 
 }
 
