@@ -3,7 +3,9 @@ package main
 import (
 	"fmt"
 	"go-orm/migration"
+	"go-orm/models"
 	"go-orm/repository"
+	"go-orm/service"
 	"log"
 	"os"
 
@@ -32,10 +34,13 @@ func main() {
 	// x, err := repository.UpdateUser(10, &newuser)
 	// log.Printf("Email: %s \n", x.Email)
 
-	users, _ := repository.FindAllUser()
-	for _, data := range *users {
-		fmt.Println(data)
-	}
+	var user models.User
+	user.UserName = "Yupi"
+	user.Email = "twister"
+	user.Pasword = "pass"
+
+	service := service.NewUserService(repository)
+	service.SaveUser(&user)
 
 }
 
