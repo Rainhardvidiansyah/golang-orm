@@ -40,7 +40,9 @@ func main() {
 	user.Pasword = "pass"
 
 	service := service.NewUserService(repository)
-	service.SaveUser(&user)
+
+	FindUserID := service.FindUserByID(16)
+	log.Printf("Verify user id %v", FindUserID)
 
 }
 
